@@ -1,7 +1,8 @@
+from time import time
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import SpeedTicket, DeviceInfo
-from .serializers import SpeedTicketSerializers
+from .serializers import SpeedTicketSerializers, DeviceInfoSerializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +11,9 @@ from account.models import Profile
 from fines.models import *
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import localtime
+import pytz
+import datetime
 
 
 def index(request):
@@ -39,6 +43,25 @@ def information(request, id):
 
 
 ## API
+
+
+class DeviceInfoPostAPIView(APIView):
+    def post(self, request):
+        serializer = DeviceInfoSerializers(data=request.data)
+        if serializer.is_valid():
+            now = datetime.datetime.now(pytz.timezone('Asia/Baghdad')).time()
+            print(now)
+            # seconds = now.second
+            dbtime = serializer.time
+            print(dbtime)
+            deff = now - dbtime
+            print(deff)
+            if now > deff + datetime.timedelta(seconds=10):
+                serializer.status = False
+            else:
+                serializer.status = True
+            serializer.save()
+
 
 class SpeedTicketPostAPIView(APIView):
 

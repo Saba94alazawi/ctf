@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 class DeviceInfo(models.Model):
     owner = models.ManyToManyField(User)
     deviceID = models.CharField(max_length=36, blank=True, null=False)
+    status = models.BooleanField(default=False)
+    time = models.TimeField(auto_now=True)
 
     def __str__(self):
         return self.deviceID

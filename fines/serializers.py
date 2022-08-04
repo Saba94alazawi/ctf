@@ -1,5 +1,6 @@
+from dataclasses import field
 from rest_framework import serializers
-from .models import SpeedTicket
+from .models import SpeedTicket, DeviceInfo
 
 
 
@@ -10,3 +11,7 @@ class SpeedTicketSerializers(serializers.ModelSerializer):
         model = SpeedTicket
         fields = '__all__'
 
+class DeviceInfoSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = DeviceInfo
+        fields = ['status', 'time']
