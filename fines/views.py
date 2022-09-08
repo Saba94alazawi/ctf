@@ -12,8 +12,7 @@ from fines.models import *
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import localtime
-import pytz
-import datetime
+from ping3 import ping
 
 
 def index(request):
@@ -24,7 +23,16 @@ def index(request):
 @login_required(login_url='index')
 def driversList(request):
     drivers = Profile.objects.filter(permission=3)
-    context = {"drivers":drivers}
+    
+    final = []
+    driverStatus = {}
+    driverID = DeviceInfo.objects.values_list('owner','status')
+    for st in driverID:
+        driverStatus={'id':st[0], 'status':st[1]}
+        final.append(driverStatus)
+    print(final)
+    context = {"drivers":drivers, 'driverID':final}
+    
     return render(request, 'drivers.html', context)
 
 
@@ -46,21 +54,20 @@ def information(request, id):
 
 
 class DeviceInfoPostAPIView(APIView):
+
     def post(self, request):
         serializer = DeviceInfoSerializers(data=request.data)
         if serializer.is_valid():
-            now = datetime.datetime.now(pytz.timezone('Asia/Baghdad')).time()
-            print(now)
-            # seconds = now.second
-            dbtime = serializer.time
-            print(dbtime)
-            deff = now - dbtime
-            print(deff)
-            if now > deff + datetime.timedelta(seconds=10):
-                serializer.status = False
-            else:
-                serializer.status = True
-            serializer.save()
+            userT = request.user
+            device_ID = DeviceInfo.objects.values_list('deviceID').filter(owner=userT)[0][0]
+            devID = DeviceInfo.objects.get(deviceID=device_ID)
+            print(serializer.validated_data.get('deviceIP'))
+            if devID.deviceIP != serializer.validated_data.get('deviceIP') or None:
+                devID.deviceIP = serializer.validated_data.get('deviceIP')
+                devID.status = serializer.validated_data.get('status')
+                devID.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SpeedTicketPostAPIView(APIView):
@@ -71,7 +78,7 @@ class SpeedTicketPostAPIView(APIView):
             # token = Token.objects.get(user=userID).key
             userT = request.user
             device_ID = DeviceInfo.objects.values_list('deviceID').filter(owner=userT)[0][0]
-            devID = DeviceInfo.objects.get(deviceID=device_ID).id
+            # devID = DeviceInfo.objects.get(deviceID=device_ID).id
             serializer.save(deviceID=DeviceInfo.objects.get(deviceID=device_ID))
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -59,6 +59,7 @@
               <th scope="col">#</th>
               <th scope="col">First Name</th>
               <th scope="col">Last Name</th>
+              <th scope="col">Status</th>
               <th scope="col">Information</th>
             </tr>
           </thead>
@@ -68,6 +69,15 @@
               <th scope="row">{{forloop.counter}}</th>
               <td>{{ driver.user.first_name }}</td>
               <td>{{ driver.user.last_name }}</td>
+              {% for detial in driverID %}
+              {% if detial.id == driver.id %}
+              {% if detial.status == False %}
+              <td>غير متصل</td>
+              {% else %}
+              <td>متصل</td>
+              {% endif %}
+              {% endif %}
+              {% endfor %}
               <td><a href="{% url 'info' driver.user.id %}">معلومات السائق</a></td>
             </tr>
           {% endfor %}

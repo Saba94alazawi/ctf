@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+<div class="wrapper image-wrapper bg-image page-title-wrapper inverse-text" data-image-src="{% static 'style/images/art/bg11.jpg' %}">
+  <div class="container inner text-center">
+    <div class="space50"></div>
+    <h1 class="page-title">Header</h1>
+    <p class="lead">Aenean lacinia bibendum consectetur</p>
+  </div>
+  <!-- /.container -->
+</div>
+    <!-- /.wrapper -->
+
+<div class="content-wrapper">
+  <div class='container'>
+  {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+  {% endif %}
+</div>
+
+<div class="wrapper light-wrapper">
+      <div class="container inner">
+        <div class="row">
+          <div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+            <h2 class="section-title mb-40 text-center">Login</h2>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="exampleInputName1">Username</label>
+                {% render_field form.username class="form-control" placeholder="Username" %}
+              </div>
+              <!-- /.form-group -->
+              <div class="form-group">
+                <label for="exampleInputPassword">Password</label>
+                {% render_field form.password class="form-control" placeholder="Password" %}
+              </div>
+              <!-- /.form-group -->
+              <button type="submit" class="btn btn-blue">Submit</button>
+            </form>
+            <!-- /form -->
+          </div>
+          <!-- /column -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container -->
+    </div>
+    <!-- /.wrapper -->
+
+
+
+{% comment %}
+
+<div class="wrapper light-wrapper">
+      <div class="container inner">
+        <h2 class="section-title mb-40 text-center">Sign Up</h2>
+        <div class="text-center"><a href="#" class="btn" data-toggle="modal" data-target="#modal-02">Open Modal</a></div>
+        <div class="modal fade" id="modal-02" tabindex="-1" role="dialog" aria-labelledby="modal-02" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="container-fluid boxed p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="image-block-wrapper">
+                  <div class="image-block col-lg-6">
+                    <div class="image-block-bg bg-image" data-image-src="{% static 'style/images/art/bg22.jpg' %}"></div>
+                  </div>
+                  <!--/.image-block -->
+                  <div>
+                    <div class="row no-gutters">
+                      <div class="col-lg-6 offset-lg-6">
+                        <div class="box p-50 d-flex">
+                          <div class="align-self-center">
+                            <h2 class="section-title mb-30">Sign In</h2>
+
+                            <form method="POST">
+                              {% csrf_token %}
+                              <div class="form-row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                    {% render_field form.username class="form-control" placeholder="UserName" %}
+                                  </div>
+                                  {{form}}
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <input type="text" class="form-control" id="inputPassword" placeholder="Password">
+                                    {% render_field form.password class="form-control" placeholder="Password" %}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="col-md-12">
+                                  <input type="submit" value="Sign In" class="btn">
+                                  <a class="btn" href="#!">Sign In</a>
+                                </div>
+                              </div>
+                            </form>
+
+                          </div>
+                          <!-- /div -->
+                        </div>
+                        <!-- /.box -->
+                      </div>
+                      <!--/column -->
+                    </div>
+                    <!--/.row -->
+                  </div>
+                  <!--/div -->
+                </div>
+                <!--/.image-block-wrapper -->
+              </div>
+              <!--/.boxed -->
+            </div>
+            <!--/.modal-content -->
+          </div>
+          <!--/.modal-dialog -->
+        </div>
+        <!--/.modal -->
+      </div>
+      <!-- /.container -->
+    </div>
+    <!-- /.wrapper -->
+{% endcomment %}
+{% endblock content %}
