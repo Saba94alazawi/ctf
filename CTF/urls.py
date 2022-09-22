@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from fines.views import *
+from fines.views import SpeedTicketPostAPIView, DeviceInfoPostAPIView, driversList, information
 from account.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,6 +29,7 @@ urlpatterns = [
     # API
     path('api-auth/', include('rest_framework.urls')),
     path('fine/', SpeedTicketPostAPIView.as_view(), name='fine'),
+    path('connecting/', DeviceInfoPostAPIView.as_view(), name='connect'),
     # path('info_fine/<int:id>', FineInfoDetials, name='fines'),
     path('api/token', obtain_auth_token, name="auth_token"),
     # dashboard

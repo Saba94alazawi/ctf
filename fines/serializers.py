@@ -11,7 +11,7 @@ class SpeedTicketSerializers(serializers.ModelSerializer):
         model = SpeedTicket
         fields = '__all__'
 
-class DeviceInfoSerializers(serializers.ModelSerializer):
+class DeviceStatuSerializers(serializers.ModelSerializer):
     class Meta:
         model = DeviceInfo
-        fields = ['status', 'deviceIP']
+        fields = ['status']
